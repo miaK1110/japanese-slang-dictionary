@@ -1,6 +1,7 @@
 import { Container, Typography, Box } from '@mui/material';
 import SearchForm from '../Molecule/SearchForm';
 import Category from '../Molecule/Category';
+import ListPage from './ListPage';
 
 const TopPage = () => {
   return (
@@ -18,6 +19,7 @@ const TopPage = () => {
             <Category />
           </Box>
         </Box>
+        <ListPage />
       </Container>
     </div>
   );
