@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const MuiTheme = createMuiTheme({
+const MuiTheme = createTheme({
   spacing: 8,
   typography: {
     fontSize: 12,
