@@ -1,4 +1,4 @@
-import { config } from '../config';
+import { config } from '../Config/config';
 
 const fetchWordApi = async () => {
   await await fetch(

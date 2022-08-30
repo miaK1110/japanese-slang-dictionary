@@ -1,15 +1,32 @@
+// form input for type=text,password and email
+
 import { memo, FC } from 'react';
+import {
+  RegisterOptions,
+  DeepMap,
+  FieldError,
+  UseFormRegister,
+  Path,
+} from 'react-hook-form';
 import TextField from '@mui/material/TextField';
+import { FormValues } from '../Molecule/LoginForm';
+
+type InputFiledType = 'text' | 'password' | 'email';
 
 type Props = {
   required?: boolean;
   width?: string;
-  type?: string;
+  type?: InputFiledType;
   id?: string;
   label?: string;
   name?: string;
   autoComplete?: string;
   autoFocus?: boolean;
+  register?: UseFormRegister<FormValues>;
+  error?: boolean;
+  helperText?: string | undefined;
+  inputRef?: React.RefObject<HTMLInputElement>;
+  value?: string;
 };
 
 const InputForm: FC<Props> = memo((props) => {
