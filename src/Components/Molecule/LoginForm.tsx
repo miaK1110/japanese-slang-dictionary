@@ -1,35 +1,31 @@
-import { useEffect, memo } from 'react';
+import { memo } from 'react';
 // React-hook-form
-import { useForm, Controller, Resolver, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 // MUI
-import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
+import {
+  Avatar,
+  CssBaseline,
+  Box,
+  Typography,
+  Container,
+  Button,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import FormHelperText from '@mui/material/FormHelperText';
 
-// Component
-import InputForm from '../Atoms/FormInputText';
-import SubmitButton from '../Atoms/SubmitButton';
+// Components
+import Input from '../Atoms/FormInputText';
 
-// input type
+// Input form type
 export type FormValues = {
   email: string;
   password: string;
 };
 
-const LoginForm = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-  } = useForm<FormValues>();
+const LoginForm = memo(() => {
+  const { handleSubmit, control } = useForm<FormValues>();
 
-  // validation rules for login form
+  // Validation rules for login form
   const validationRules = {
     email: {
       required: 'Email is required',
@@ -45,29 +41,10 @@ const LoginForm = () => {
     },
   };
 
-  // do we need to reset????? not sure
-  // useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isSubmitSuccessful]);
-
-  // const formSubmitHandler: SubmitHandler<FormValues> = (data: FormValues) => {
-  //   console.log(data);
-  // };
-
-  const onSubmit: SubmitHandler<FormValues> = (data: FormValues, e: any) => {
-    // e.preventDefault();
-    alert('aaaaaaa');
-    console.log(`submit: ${data}`);
+  const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
+    console.log(`data: ${JSON.stringify(data)}`);
   };
 
-  // const onSubmit = (e: any) => {
-  //   e.preventDefault();
-  //   alert('aaaaaaa');
-  //   console.
-  // };
   return (
     <Container component='main' maxWidth='xs'>
       <CssBaseline />
@@ -85,60 +62,44 @@ const LoginForm = () => {
         <Typography component='h1' variant='h5'>
           Log in
         </Typography>
-        <Box
-          component='form'
-          noValidate
-          sx={{ mt: 1 }}
-          onSubmit={handleSubmit((d) => alert(JSON.stringify(d)))}
-        >
+        <Box component='form' noValidate sx={{ mt: 1 }}>
           {/* Input for email */}
-          <Controller
-            control={control}
-            name='email'
-            defaultValue={''}
+          <Input
+            name={'email'}
             rules={validationRules.email}
-            render={({ field, fieldState: { error } }) => (
-              <InputForm
-                required={true}
-                id={'email'}
-                type={'email'}
-                label={'Email Address'}
-                autoComplete={'email'}
-                autoFocus={true}
-                {...field}
-                error={!!error?.message}
-                helperText={error?.message}
-              />
-            )}
-          />
-          {/* <FormHelperText>{fieldState.error?.message}</FormHelperText> */}
-          {/* Input for password */}
-          {/* <Controller
+            required={true}
+            id={'email'}
+            type={'email'}
+            label={'Email Address'}
+            autoComplete={'email'}
+            autoFocus={true}
             control={control}
-            name='password'
-            defaultValue={''}
+          />
+          {/* Input for password */}
+          <Input
+            name={'password'}
             rules={validationRules.password}
-            render={({ field, fieldState: { error } }) => (
-              <InputForm
-                required={true}
-                id={'password'}
-                type={'password'}
-                label={'Password'}
-                autoComplete={'password'}
-                autoFocus={true}
-                {...field}
-                error={!!error?.message}
-                helperText={error?.message}
-              />
-            )}
-          /> */}
-          {/* <button onSubmit={handleSubmit((e) => onSubmit)}>aa</button> */}
-
-          <SubmitButton>LOG IN</SubmitButton>
+            required={true}
+            id={'password'}
+            type={'password'}
+            label={'Password'}
+            autoComplete={'password'}
+            autoFocus={true}
+            control={control}
+          />
+          {/* Submit button */}
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            fullWidth
+            variant='contained'
+            sx={{ mt: 3, mb: 2 }}
+          >
+            LOG IN
+          </Button>
         </Box>
       </Box>
     </Container>
   );
-};
+});
 
 export default LoginForm;

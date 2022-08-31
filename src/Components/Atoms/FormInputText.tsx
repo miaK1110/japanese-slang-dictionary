@@ -1,51 +1,54 @@
-// form input for type=text,password and email
+// Form input with react-hook-form for type=text, password and email
 
-import { memo, FC } from 'react';
-import {
-  RegisterOptions,
-  DeepMap,
-  FieldError,
-  UseFormRegister,
-  Path,
-} from 'react-hook-form';
-import TextField from '@mui/material/TextField';
-import { FormValues } from '../Molecule/LoginForm';
+import { FC, memo } from 'react';
+import { Controller } from 'react-hook-form';
+import TextField from '@material-ui/core/TextField';
 
-type InputFiledType = 'text' | 'password' | 'email';
+import { FormInputProps } from '../Types/Form/FormInputProps';
 
-type Props = {
-  required?: boolean;
-  width?: string;
-  type?: InputFiledType;
-  id?: string;
-  label?: string;
-  name?: string;
-  autoComplete?: string;
-  autoFocus?: boolean;
-  register?: UseFormRegister<FormValues>;
-  error?: boolean;
-  helperText?: string | undefined;
-  inputRef?: React.RefObject<HTMLInputElement>;
-  value?: string;
-};
+const FormInputTmp: FC<FormInputProps> = memo((props) => {
+  const {
+    name,
+    control,
+    rules,
+    required,
+    type,
+    id,
+    label,
+    autoComplete,
+    autoFocus,
+  } = props;
 
-const InputForm: FC<Props> = memo((props) => {
-  const { required, type, id, label, name, autoComplete, autoFocus } = props;
   return (
-    <div>
-      <TextField
-        margin='normal'
-        required={required}
-        fullWidth
-        type={type}
-        id={id}
-        label={label}
-        name={name}
-        autoComplete={autoComplete}
-        autoFocus={autoFocus}
-      />
-    </div>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={''}
+      rules={rules}
+      render={({
+        field: { onChange, value },
+        fieldState: { error },
+        formState,
+      }) => (
+        <TextField
+          margin='normal'
+          fullWidth
+          variant='outlined'
+          required={required}
+          type={type}
+          id={id}
+          label={label}
+          name={name}
+          autoComplete={autoComplete}
+          autoFocus={autoFocus}
+          error={!!error}
+          onChange={onChange}
+          value={value}
+          helperText={error ? error.message : null}
+        />
+      )}
+    />
   );
 });
 
-export default InputForm;
+export default FormInputTmp;
