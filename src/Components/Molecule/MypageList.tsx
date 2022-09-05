@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// Firebase config file
+import { auth, db } from '../Config/firebaseConfig';
+import { collection, getDocs, doc } from 'firebase/firestore';
 
 // MUI
 import {
@@ -11,12 +15,13 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import Modal from '../Molecule/EditModal';
+import EditModal from '../Molecule/EditModal';
 
 // MUI icons
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import { deepPurple } from '@mui/material/colors';
 
 // Additional style
 const ListText = styled(ListItemText)({
@@ -25,8 +30,49 @@ const ListText = styled(ListItemText)({
   textOverflow: 'ellipsis',
 });
 
+// Input form type
+export type FormValues = {
+  name: string;
+  nameInIng: string;
+  kana: string;
+  meaning: string;
+  category: Array<string>;
+  example: string;
+  exampleInEng: string;
+};
+
 const CheckboxList = () => {
+  const collectionRef = collection(db, 'words');
+
+  const [wordsData, setWordsData] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
+
+  useEffect(() => {
+    const wordsFromFirebase: any[] = [];
+    getDocs(collectionRef).then((responce) => {
+      //   console.log(
+      //     responce.docs.map((doc) => {
+      //       return { ...doc.data(), id: doc.id };
+      //     })
+      //   );
+      responce.docs.map((doc) => {
+        wordsFromFirebase.push({
+          ...doc.data(),
+        });
+      });
+      setWordsData(wordsFromFirebase);
+      console.log(wordsData);
+    });
+    // const WordsFromFirebase = {};
+    // const subscriber = db.collection('words').onSnapShot((querySnapShot) => {
+    //   querySnapShot.forEach((doc) => {
+    //     WordsFromFirebase.push({
+    //       ...doc.data(),
+    //     });
+    //     setWordsData(WordsFromFirebase);
+    //   });
+    // });
+  }, []);
 
   // I made checkbox for delete multipul words but Idn if I need it anymore.
   //   const handleToggle = (value: number) => () => {
@@ -43,18 +89,22 @@ const CheckboxList = () => {
   //   };
 
   const onClickShowEditModal = () => {
-    setShowEditModal(!showEditModal);
+    setOpen(!open);
   };
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
   return (
     <>
-      {showEditModal ? <Modal /> : null}
+      <EditModal open={open} />
+      {/* {showEditModal ? <EditModal /> : null} */}
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {[0, 1, 2, 3].map((value) => {
+        {Object.keys(wordsData).map((index,value: any) => {
           const labelId = `checkbox-list-label-${value}`;
-
+          console.log(value);
           return (
             <ListItem
-              key={value}
+              key={index}
               secondaryAction={
                 <>
                   {/* <IconButton aria-label='edit'>
@@ -65,13 +115,10 @@ const CheckboxList = () => {
                   </IconButton>
                 </>
               }
+              onClick={onClickShowEditModal}
               disablePadding
             >
-              <ListItemButton
-                role={undefined}
-                onClick={onClickShowEditModal}
-                dense
-              >
+              <ListItemButton role={undefined} dense>
                 <ListItemIcon>
                   {/* <Checkbox
                   edge='start'
@@ -82,7 +129,7 @@ const CheckboxList = () => {
                 /> */}
                   <TextSnippetIcon color='primary' />
                 </ListItemIcon>
-                <ListText id={labelId} primary={`親ガチャ${value + 1}`} />
+                <ListText id={labelId} primary={`texttext${value[].name}`} />
               </ListItemButton>
             </ListItem>
           );
