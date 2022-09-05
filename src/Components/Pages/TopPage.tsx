@@ -3,6 +3,7 @@ import SearchForm from '../Molecule/SearchForm';
 import Category from '../Molecule/Category';
 import ListPage from './ListPage';
 import LoginPage from './LoginPage';
+import WordRegisterForm from './WordRegisterForm';
 
 const TopPage = () => {
   return (
@@ -22,7 +23,8 @@ const TopPage = () => {
         </Box>
         <ListPage />
       </Container> */}
-      <LoginPage />
+      {/* <LoginPage /> */}
+      <WordRegisterForm />
     </div>
   );
 };

@@ -2,7 +2,7 @@ type InputFiledType = 'text' | 'password' | 'email';
 
 export interface FormInputProps {
   name: string;
-  control: any;
+  control?: any;
   label: string;
   setValue?: any;
   required?: boolean;
@@ -12,5 +12,5 @@ export interface FormInputProps {
   autoFocus?: boolean;
   error?: boolean;
   helperText?: string | undefined;
-  rules: any;
+  rules?: any;
 }
