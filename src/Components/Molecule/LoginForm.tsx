@@ -2,6 +2,12 @@ import { memo } from 'react';
 // React-hook-form
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+// Firebase
+
+// Firebase config file
+import { auth, signInWithEmailAndPassword } from '../Config/firebaseConfig';
+// Test user email="testuser@test.com" password=111111
+
 // MUI
 import {
   Avatar,
@@ -23,6 +29,7 @@ export type FormValues = {
 };
 
 const LoginForm = memo(() => {
+  // const auth = getAuth();
   const { handleSubmit, control } = useForm<FormValues>();
 
   // Validation rules for login form
@@ -43,6 +50,14 @@ const LoginForm = memo(() => {
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     console.log(`data: ${JSON.stringify(data)}`);
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((response) => {
+        console.log(response.user);
+        console.log('dekita');
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
   };
 
   return (
