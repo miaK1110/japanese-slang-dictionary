@@ -4,14 +4,11 @@ import { memo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 // MUI
-import {
-  Avatar,
-  CssBaseline,
-  Box,
-  Typography,
-  Container,
-  Button,
-} from '@mui/material';
+import { CssBaseline, Box, Typography, Container, Button } from '@mui/material';
+
+// Firebase config file
+import { auth, db } from '../Config/firebaseConfig';
+import { collection, addDoc } from 'firebase/firestore';
 
 import Input from '../Atoms/FormInputText';
 import MultiCheckbox from '../Atoms/FormInputMultiSelect';
@@ -28,15 +25,47 @@ const validationRules = {
 
 // Input form type
 export type FormValues = {
-  email: string;
-  password: string;
+  name: string;
+  nameInIng: string;
+  kana: string;
+  meaning: string;
+  category: Array<string>;
+  example: string;
+  exampleInEng: string;
 };
 
 const WordRegisterForm = () => {
   const { handleSubmit, control, setValue } = useForm<FormValues>();
 
+  const user = auth.currentUser;
+  const collectionRef = collection(db, 'words');
+
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     console.log(`data: ${JSON.stringify(data)}`);
+    if (user) {
+      // If user is logged in
+      const uid = user.uid;
+      addDoc(collectionRef, {
+        name: data.name,
+        nameInEng: data.nameInIng,
+        kana: data.kana,
+        meaning: data.meaning,
+        category: data.category,
+        example: data.example,
+        exampleInEng: data.exampleInEng,
+        authRef: `users/${uid}`,
+      })
+        .then((responce) => {
+          // Need to transition to my page
+          alert('Data added');
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    } else {
+      // If user is not logged in
+      // Need to transition to log-in page
+    }
   };
 
   return (
@@ -51,9 +80,6 @@ const WordRegisterForm = () => {
             alignItems: 'center',
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar> */}
           <Typography component='h1' variant='h5'>
             Register Word
           </Typography>
