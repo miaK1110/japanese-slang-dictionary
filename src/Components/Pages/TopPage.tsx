@@ -4,6 +4,7 @@ import Category from '../Molecule/Category';
 import ListPage from './ListPage';
 import LoginPage from './LoginPage';
 import WordRegisterForm from './WordRegisterForm';
+import Mypage from './Mypage';
 
 const TopPage = () => {
   return (
@@ -24,7 +25,8 @@ const TopPage = () => {
         <ListPage />
       </Container> */}
       {/* <LoginPage /> */}
-      <WordRegisterForm />
+      {/* <WordRegisterForm /> */}
+      <Mypage />
     </div>
   );
 };
