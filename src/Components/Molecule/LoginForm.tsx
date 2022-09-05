@@ -46,7 +46,7 @@ const LoginForm = memo(() => {
   };
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component='section' maxWidth='xs'>
       <CssBaseline />
       <Box
         sx={{
